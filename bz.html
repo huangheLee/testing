@@ -6719,8 +6719,6 @@
     };
 
 
-
-
     function generateBazi() {
         const name = document.getElementById('name').value;
         const d = document.getElementById('birthdate').value
@@ -6760,12 +6758,12 @@
             '伤官': 0,
             '财旺': 0,
             '煞重': 0,
-            '命旺': 0
+            '比肩': 0
         };
 
         const elements = [tianGanWuXing[yearTG], tianGanWuXing[monthTG], tianGanWuXing[hourTG], diZhiWuXing[yearDZ], diZhiWuXing[monthDZ], diZhiWuXing[dayDZ], diZhiWuXing[hourDZ]];
         elements.forEach(element => {
-            if (element === dayWuXing) counts['命旺']++;
+            if (element === dayWuXing) counts['比肩']++;
             if (dayWuXing === '木' && element === '水') counts['印重']++;
             if (dayWuXing === '木' && element === '火') counts['伤官']++;
             if (dayWuXing === '木' && element === '土') counts['财旺']++;
@@ -6821,7 +6819,7 @@
                                 <li class="count-item" data-type="伤官">伤官: ${counts['伤官']}</li>
                                 <li class="count-item" data-type="财旺">财旺: ${counts['财旺']}</li>
                                 <li class="count-item" data-type="煞重">煞重: ${counts['煞重']}</li>
-                                <li class="count-item" data-type="命旺">命旺: ${counts['命旺']}</li>
+                                <li class="count-item" data-type="比肩">比肩: ${counts['比肩']}</li>
                               </ul>`;
 
         document.getElementById('result').innerHTML = resultHtml;
@@ -6846,7 +6844,7 @@
                         cell.classList.add('highlighted');
                     } else if (type === '煞重' && cellWuXing === (targetWuXing)) {
                         cell.classList.add('highlighted');
-                    } else if (type === '命旺' && cellWuXing === targetWuXing) {
+                    } else if (type === '比肩' && cellWuXing === targetWuXing) {
                         cell.classList.add('highlighted');
                     } else {
                         cell.classList.remove('highlighted');
@@ -6872,7 +6870,7 @@
                 return getKeWuXing(dayWuXing);
             case '煞重':
                 return getRevertKeWuXing(dayWuXing);
-            case '命旺':
+            case '比肩':
                 return dayWuXing;
             default:
                 return null;
