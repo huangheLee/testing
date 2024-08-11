@@ -6727,11 +6727,6 @@
             return
         }
         const birthdate = new Date(d);
-        const year = birthdate.getFullYear();
-        const month = birthdate.getMonth();
-        const day = birthdate.getDate();
-        const hour = birthdate.getHours();
-        // 假设通过某种方法获取到天干地支，实际需要调用专业的库
         const bazi = getTianGanDiZhi(birthdate);
 
         // const bazi = {
@@ -6756,43 +6751,50 @@
         const ming = dayTG + dayTG_WuXing
         const ju = mingJuMapping[dayTG_WuXing + diZhiWuXing[monthDZ]];
 
-        const counts = {
+        const list_counts = {
             '印重': 0,
             '伤官': 0,
             '财旺': 0,
             '煞重': 0,
             '比肩': 0
         };
+        const list_wuxing = {
+            '印重': getRevertShengWuXing(dayTG_WuXing),
+            '伤官': getShengWuXing(dayTG_WuXing),
+            '财旺': getKeWuXing(dayTG_WuXing),
+            '煞重': getRevertKeWuXing(dayTG_WuXing),
+            '比肩': dayTG_WuXing
+        };
 
         const elements = [tianGanWuXing[yearTG], tianGanWuXing[monthTG], tianGanWuXing[hourTG], diZhiWuXing[yearDZ], diZhiWuXing[monthDZ], diZhiWuXing[dayDZ], diZhiWuXing[hourDZ]];
         elements.forEach(element => {
-            if (element === dayTG_WuXing) counts['比肩']++;
-            if (dayTG_WuXing === '木' && element === '水') counts['印重']++;
-            if (dayTG_WuXing === '木' && element === '火') counts['伤官']++;
-            if (dayTG_WuXing === '木' && element === '土') counts['财旺']++;
-            if (dayTG_WuXing === '木' && element === '金') counts['煞重']++;
-            if (dayTG_WuXing === '火' && element === '木') counts['印重']++;
-            if (dayTG_WuXing === '火' && element === '土') counts['伤官']++;
-            if (dayTG_WuXing === '火' && element === '金') counts['财旺']++;
-            if (dayTG_WuXing === '火' && element === '水') counts['煞重']++;
-            if (dayTG_WuXing === '土' && element === '火') counts['印重']++;
-            if (dayTG_WuXing === '土' && element === '金') counts['伤官']++;
-            if (dayTG_WuXing === '土' && element === '水') counts['财旺']++;
-            if (dayTG_WuXing === '土' && element === '木') counts['煞重']++;
-            if (dayTG_WuXing === '金' && element === '土') counts['印重']++;
-            if (dayTG_WuXing === '金' && element === '水') counts['伤官']++;
-            if (dayTG_WuXing === '金' && element === '木') counts['财旺']++;
-            if (dayTG_WuXing === '金' && element === '火') counts['煞重']++;
-            if (dayTG_WuXing === '水' && element === '金') counts['印重']++;
-            if (dayTG_WuXing === '水' && element === '木') counts['伤官']++;
-            if (dayTG_WuXing === '水' && element === '火') counts['财旺']++;
-            if (dayTG_WuXing === '水' && element === '土') counts['煞重']++;
+            if (element === dayTG_WuXing) list_counts['比肩']++;
+            if (dayTG_WuXing === '木' && element === '水') list_counts['印重']++;
+            if (dayTG_WuXing === '木' && element === '火') list_counts['伤官']++;
+            if (dayTG_WuXing === '木' && element === '土') list_counts['财旺']++;
+            if (dayTG_WuXing === '木' && element === '金') list_counts['煞重']++;
+            if (dayTG_WuXing === '火' && element === '木') list_counts['印重']++;
+            if (dayTG_WuXing === '火' && element === '土') list_counts['伤官']++;
+            if (dayTG_WuXing === '火' && element === '金') list_counts['财旺']++;
+            if (dayTG_WuXing === '火' && element === '水') list_counts['煞重']++;
+            if (dayTG_WuXing === '土' && element === '火') list_counts['印重']++;
+            if (dayTG_WuXing === '土' && element === '金') list_counts['伤官']++;
+            if (dayTG_WuXing === '土' && element === '水') list_counts['财旺']++;
+            if (dayTG_WuXing === '土' && element === '木') list_counts['煞重']++;
+            if (dayTG_WuXing === '金' && element === '土') list_counts['印重']++;
+            if (dayTG_WuXing === '金' && element === '水') list_counts['伤官']++;
+            if (dayTG_WuXing === '金' && element === '木') list_counts['财旺']++;
+            if (dayTG_WuXing === '金' && element === '火') list_counts['煞重']++;
+            if (dayTG_WuXing === '水' && element === '金') list_counts['印重']++;
+            if (dayTG_WuXing === '水' && element === '木') list_counts['伤官']++;
+            if (dayTG_WuXing === '水' && element === '火') list_counts['财旺']++;
+            if (dayTG_WuXing === '水' && element === '土') list_counts['煞重']++;
         });
-        console.log("counts: " + JSON.stringify(counts))
+        console.log("counts: " + JSON.stringify(list_counts))
 
         let resultHtml = `<h3>结果:</h3>
                               <h3>${name}</h3>
-                              <p>① ${ming}命   ② ${ju}(${monthDZ_WuXing})</p>
+                              <p>① ${ming}命   ② ${ju}(${monthDZ_WuXing}->${dayTG_WuXing})</p>
                               <p>公历：${birthdate.getFullYear()}年 ${birthdate.getMonth() + 1}月${birthdate.getDate()}日 ${birthdate.getHours()}点</p>
                               <p>农历：${bazi.year.nl}年 ${bazi.month.nl}月${bazi.day.nl} ${bazi.hour.nl}时</p>
                               <table>
@@ -6821,40 +6823,40 @@
 
                              <table class="counts-table">
                             <tr>
-                                <th>病与药</th>
-                                <th>关系</th>
+                                <th>药</th>
+                                <th>病</th>
                                 <th>五行</th>
                                 <th>计数</th>
                             </tr>
                             <tr class="count-item" data-type="印重">
-                                <td>${getBingOrYao('印重', monthDZ_WuXing, dayTG_WuXing)}</td>
+                                <td>${getBingOrYao('印重', monthDZ_WuXing, dayTG_WuXing, list_wuxing)}</td>
                                 <td>印重</td>
                                 <td>${getRevertShengWuXing(dayTG_WuXing)}</td>
-                                <td>${counts['印重']}</td>
+                                <td>${list_counts['印重']}</td>
                             </tr>
                             <tr class="count-item" data-type="伤官">
-         <td>${getBingOrYao('伤官', monthDZ_WuXing, dayTG_WuXing)}</td>
+         <td>${getBingOrYao('伤官', monthDZ_WuXing, dayTG_WuXing, list_wuxing)}</td>
                                 <td>伤官</td>
                                 <td>${getShengWuXing(dayTG_WuXing)}</td>
-                                <td>${counts['伤官']}</td>
+                                <td>${list_counts['伤官']}</td>
                             </tr>
                             <tr class="count-item" data-type="财旺">
-         <td>${getBingOrYao('财旺', monthDZ_WuXing, dayTG_WuXing)}</td>
+         <td>${getBingOrYao('财旺', monthDZ_WuXing, dayTG_WuXing, list_wuxing)}</td>
                                          <td>财旺</td>
                                 <td>${getKeWuXing(dayTG_WuXing)}</td>
-                                <td>${counts['财旺']}</td>
+                                <td>${list_counts['财旺']}</td>
                             </tr>
                             <tr class="count-item" data-type="煞重">
-         <td>${getBingOrYao('煞重', monthDZ_WuXing, dayTG_WuXing)}</td>
+         <td>${getBingOrYao('煞重', monthDZ_WuXing, dayTG_WuXing, list_wuxing)}</td>
               <td>煞重</td>
                                 <td>${getRevertKeWuXing(dayTG_WuXing)}</td>
-                                <td>${counts['煞重']}</td>
+                                <td>${list_counts['煞重']}</td>
                             </tr>
                             <tr class="count-item" data-type="比肩">
-         <td>${getBingOrYao('比肩', monthDZ_WuXing, dayTG_WuXing)}</td>
+         <td>${getBingOrYao('比肩', monthDZ_WuXing, dayTG_WuXing, list_wuxing)}</td>
                                          <td>比肩</td>
                                 <td>${dayTG_WuXing}</td>
-                                <td>${counts['比肩']}</td>
+                                <td>${list_counts['比肩']}</td>
                             </tr>
                         </table>`;
 
@@ -6897,7 +6899,8 @@
         });
     }
 
-    function getBingOrYao(dataType, monthDZ_WuXing, dayTG_WuXing) {
+    function getBingOrYao(dataType, monthDZ_WuXing, dayTG_WuXing, list_wuxing) {
+        return '';
         const hao = getKeWuXing(monthDZ_WuXing)
         const ke = getRevertKeWuXing(monthDZ_WuXing)
         const xie = getShengWuXing(monthDZ_WuXing)
@@ -6905,15 +6908,16 @@
         switch (dataType) {
 
             case '印重':
-                const yinWuXing = getRevertShengWuXing(dayTG_WuXing)
-                if (yinWuXing === monthDZ_WuXing) {
+            case '比肩':
+                const currWuxing = list_wuxing[dataType]
+                if (currWuxing === monthDZ_WuXing) {
                     return '病根'
-                } else if (yinWuXing === xie) {
-                    return '泄(君药)'
-                } else if (yinWuXing === ke) {
-                    return '克(臣药)'
-                } else if (yinWuXing === hao) {
-                    return '耗'
+                } else if (currWuxing === xie) {
+                    return currWuxing + '泄' + monthDZ_WuXing + '(君药)'
+                } else if (currWuxing === ke) {
+                    return currWuxing + '克' + monthDZ_WuXing + '(臣药)'
+                } else if (currWuxing === hao) {
+                    return currWuxing + '耗' + monthDZ_WuXing + '(次药)'
                 } else {
                     return '生病'
                 }
@@ -6952,19 +6956,6 @@
                 } else if (shangWuXing === ke) {
                     return '克(臣药)'
                 } else if (shangWuXing === hao) {
-                    return '耗'
-                } else {
-                    return '生病'
-                }
-            case '比肩':
-                const biJianWuxing = dayTG_WuXing
-                if (biJianWuxing === monthDZ_WuXing) {
-                    return '病根'
-                } else if (biJianWuxing === xie) {
-                    return '泄(君药)'
-                } else if (biJianWuxing === ke) {
-                    return '克(臣药)'
-                } else if (biJianWuxing === hao) {
                     return '耗'
                 } else {
                     return '生病'
