@@ -106,11 +106,44 @@
     </div>
     <div class="form-group">
         <label for="birthdate">公历生日:</label>
-        <input type="datetime-local" id="birthdate" min="1900-01-01T00:00" max="2100-12-31T23:59">
+        <input type="text" id="birthdate" min="1900-01-01T00:00" max="2100-12-31T23:59">
+
     </div>
     <button onclick="generateBazi()">生成八字</button>
     <div class="result" id="result"></div>
 </div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    const chineseLocale = {
+        weekdays: {
+            shorthand: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+            longhand: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+        },
+        months: {
+            shorthand: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            longhand: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+        },
+        firstDayOfWeek: 1
+    };
+
+    flatpickr('#birthdate', {
+        noCalendar: false,
+        dateFormat: 'Y-m-d H:00:00',
+        time_24hr: true,
+        locale: chineseLocale,
+        altInput: true,
+        altFormat: 'Y年m月d日H时',
+        minDate: "1900-01-01", // 设置最小年对应的日期
+        maxDate: "2100-12-31", // 设置最大年对应的日期
+        enableTime: true,
+        enableSeconds: false,
+        enableMinutes: false
+    });
+
+</script>
+
 <!--<script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.6.12/lunar.min.js"></script>-->
 <script>
     ;(function (root, factory) {
