@@ -107,9 +107,8 @@
     <div class="form-group">
         <label for="birthdate">公历生日:</label>
         <input type="datetime-local" id="birthdate" min="1900-01-01T00:00" max="2100-12-31T23:59">
-
     </div>
-    <button onclick="generateBazi()">生成八字</button>
+    <button onclick="generateLook()">生成八字</button>
     <div class="result" id="result"></div>
 </div>
 <!--<script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.6.12/lunar.min.js"></script>-->
@@ -6721,7 +6720,7 @@
     };
 
 
-    function generateBazi() {
+    function generateLook() {
         const name = document.getElementById('name').value;
         const d = document.getElementById('birthdate').value
         if (d === null || d === '') {
